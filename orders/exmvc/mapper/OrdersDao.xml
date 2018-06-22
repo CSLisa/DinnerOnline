@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="exmvc.dao.OrderDao" >
+  <!--实施模糊查询  -->
+  <sql id="conditionHandling"> 
+      <if test="usersId!=null and usersId!=''" >  
+          and usersId like '%${usersId}%'    
+      </if>  
+      <if test="id!=null and id!=''" >  
+          and id like '%${id}%'    
+      </if>
+      
+    </sql>
+    <!-- 
+     1>List<Dept>  findAll(Dept condition) throws Exception;
+     --> 
+	<select id="findAll" resultType="exmvc.entity.impl.Orders"     parameterType="exmvc.entity.impl.Orders">
+	    select * from orders
+	    	where 
+	       1=1
+	       <include refid="conditionHandling"></include>
+	</select>
+	<!-- 
+	  T   findById(T condition) throws Exception;        
+	 -->
+	<select id="findById" resultType="exmvc.entity.impl.Orders" parameterType="exmvc.entity.impl.Orders" >
+	     select * from Orders
+	     where 
+	        id=#{id}
+	</select> 
+	<!-- 
+	int getRows(T condition) throws Exception;
+	 -->
+   <select id="getRows" resultType="int" parameterType="exmvc.entity.impl.Orders" >
+         select count(*) from Orders
+	      where  
+	           1=1
+	       <include refid="conditionHandling"></include>     
+   </select>
+   <!-- 
+    List<T> findByPaging(T condition,RowBounds rowBounds);
+    -->
+   <select id="findByPaging" resultType="exmvc.entity.impl.Orders"  parameterType="exmvc.entity.impl.Orders" >
+      select e1.* 
+      from 
+        (
+           select e.*,rownum rn
+           from 
+           (
+             select * from Orders 
+	         where  
+	           1=1
+	           <include refid="conditionHandling"></include>
+             order by to_number(id) asc
+           )e
+        ) e1 
+	</select>
+	<!-- 
+	 int add(T condition) throws Exception;
+drop table orders;
+CREATE TABLE orders
+(
+id VARCHAR2(50) NOT NULL
+,usersId  VARCHAR2(50) DEFAULT NULL 
+,amount VARCHAR2(50) DEFAULT NULL  
+,quantity VARCHAR2(20) DEFAULT NULL 
+,time VARCHAR2(50) DEFAULT NULL 
+,status1 VARCHAR2(20) DEFAULT NULL 
+,status2 VARCHAR2(20) DEFAULT NULL 
+,PRIMARY KEY (id)
+);
+	 -->
+	<insert id="add" parameterType="exmvc.entity.impl.Orders">
+	   insert into Orders
+	       (id,usersId,amount,quantity,time,status1,status2)
+	   values
+	       (#{id},#{usersId},#{amount},#{quantity},#{time},#{status1},#{status2}) 
+	</insert>
+	 <!-- 
+	 int update(T condition) throws Exception;
+	 -->
+	<update id="update" parameterType="exmvc.entity.impl.Orders">
+	    update Orders
+	    <set>
+	      <if test="usersId!=null and usersId!=''">
+	          usersId=#{usersId},
+	      </if>
+	      <if test="amount!=null and amount!=''">
+	          amount=#{amount},
+	      </if>
+	      <if test="quantity!=null and quantity!=''">
+	          quantity=#{quantity},
+	      </if>
+	      <if test="time!=null and time!=''">
+	          time=#{time},
+	      </if>
+	      <if test="status1!=null and status1!=''">
+	          status1=#{status1},
+	      </if>
+	      <if test="status2!=null and status2!=''">
+	          status2=#{status2},
+	      </if>
+	    </set>
+	    where 
+	       id=#{id}  
+	</update>
+	<delete id="delete" parameterType="exmvc.entity.impl.Orders">
+	    delete from Orders
+	    where 
+	       id=#{id} 
+	</delete>
+</mapper>

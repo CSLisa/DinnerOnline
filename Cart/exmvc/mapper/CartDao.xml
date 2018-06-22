@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="exmvc.dao.CartDao">
+
+  <sql id="conditionHandling" > 	
+  	<if test="id!=null and id!=''">
+  		and ID like '%${id}%'
+  	</if>
+  	<if test="name != null and name !=''">
+  		and NAME like "%"#{name}"%"
+  	</if>
+  	<if test="originalPrice != null and originalPrice !=''">
+  		and ORIGINALPRICE like "%"#{originalPrice}"%"
+  	</if>
+  	<if test="quantity != null and quantity !=''">
+  		and QUANTITY like "%"#{quantity}"%"
+  	</if>
+  	<if test="price != null and price !=''">
+  		and PRICE like '%'#{price}"%"
+  	</if>
+  </sql>
+  
+  <!-- findAll -->
+  <select id="findAll" resultType="exmvc.entity.impl.Cart" parameterType="exmvc.entity.impl.Cart">
+    select  *  from Cart
+    where 1=1
+    <include refid="conditionHandling" />
+  </select>
+  
+  
+  <select id="findById" resultType="exmvc.entity.impl.Cart"  parameterType="exmvc.entity.impl.Cart">
+    select 
+    *
+    from Cart
+    where
+      ID=#{id}
+  </select>
+  
+  <select id="getRows" resultType="long" parameterType="exmvc.entity.impl.Cart">
+  	select count(*) from Cart
+  	  where 1=1
+  	  <include refid="conditionHandling"></include>
+  </select>
+  
+  <select id="findByPaging" resultType="exmvc.entity.impl.Cart" parameterType="exmvc.entity.impl.Cart">
+  	select e1.*
+  	  from 
+  	    (
+  	    	select e.*, rownum rn
+  	    	from
+  	    	(
+  	    	  select * from Cart
+  	    		where 1=1
+  	    		<include refid="conditionHandling"></include>
+	    	  order by to_number(ID) asc
+  	   		)e
+  	    ) e1
+  </select>
+  
+
+  <insert id="add" parameterType="exmvc.entity.impl.Cart">
+    insert into Cart (ID, NAME, ORIGINALPRICE, QUANTITY, PRICE
+      )
+    values (#{id}, #{name}, #{originalPrice}, #{quantity}, #{price}
+      )
+  </insert>
+  
+  <update id="update" parameterType="exmvc.entity.impl.Cart">
+    update Cart
+    <set>    
+      <if test="name != null and name!=''">
+        NAME = #{name},
+      </if>
+      <if test="originalPrice != null and originalPrice!=''">
+        ORIGINALPRICE = #{originalPrice},
+      </if>
+      <if test="quantity != null and quantity!=''">
+        QUANTITY = #{quantity},
+      </if>
+      <if test="price != null and price!=''">
+        PRICE = #{price},
+      </if>
+    </set>
+    where ID = #{id}
+  </update>
+  
+  <delete id="delete" parameterType="exmvc.entity.impl.Cart">
+    delete from Cart
+    where ID = #{id}
+  </delete>
+
+</mapper>

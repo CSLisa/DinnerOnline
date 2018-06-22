@@ -1,0 +1,107 @@
+﻿
+-- 创建用户表
+CREATE TABLE USERS 
+(
+  ID VARCHAR2(10) NOT NULL 
+, NAME VARCHAR2(20) NOT NULL 
+, PWD VARCHAR2(20) NOT NULL 
+, REALNAME VARCHAR2(20) NOT NULL 
+, SEX VARCHAR2(10) NOT NULL 
+, AGE VARCHAR2(4) NOT NULL 
+, IDCARD VARCHAR2(20) NOT NULL 
+, ADDRESS VARCHAR2(100) NOT NULL 
+, PHONE VARCHAR2(20) NOT NULL 
+, EMAIL VARCHAR2(20) 
+, CODE VARCHAR2(10) 
+, TYPE VARCHAR2(20) DEFAULT 0 NOT NULL 
+,PRIMARY KEY (id)
+);
+
+INSERT INTO users VALUES ('2', '222', '222', '2221', '女', '241', '211111111111111111', '郑州市高新区', '13988888888', '123@163.com', '110044', '0');
+INSERT INTO users VALUES ('3', 'sunday', '123', '张三', '男', '26', '4222222222222222', '郑州市高新区', '13901001111', '13901001111@139.com', '101000', '0');
+INSERT INTO users VALUES ('4', '1', '1', '李二狗', '男', '1', '1', '郑州市高新区', '1', '1', '1', '0');
+INSERT INTO users VALUES ('8', '炸支付', '4565', '赵志国', '男', '45', '410621199709284517', '郑州市高新区', '13253312194', '456250@111.com', '45445', '0');
+INSERT INTO users VALUES ('9', 'evan', '888333', '王权', '男', '56', '456464546545654', '郑州市高新区', '2343434', '45654545@qq.com', '456250', '0');
+INSERT INTO users VALUES ('10', 'fas', 'fa', 'fasd', '男', '12', '324254345345', '郑州市高新区dfadf', '13121555', '32433@adsfs', '4533', '0');
+
+-- 创建管理员表
+CREATE TABLE admin (
+  id VARCHAR2(4) NOT NULL,
+  name VARCHAR2(20) NOT NULL,
+  pwd VARCHAR2(20) NOT NULL,
+  authority varchar2(10) NOT NULL,
+  PRIMARY KEY (id)
+);
+-- ----------------------------
+-- Records of admin
+-- ----------------------------
+INSERT INTO admin VALUES ('1', 'sa', 'sa', '0');
+INSERT INTO admin VALUES ('2', 'admin', 'admin', '0');
+
+
+-- drop table Dishes
+-- 菜品
+CREATE TABLE Dishes
+(
+id VARCHAR2(20) NOT NULL                        -- 编号
+,name VARCHAR2(50) DEFAULT NULL          -- 菜品名称
+,type VARCHAR2(20) DEFAULT NULL            -- 类型（2套餐/1零售）
+,describe VARCHAR2(500) DEFAULT NULL    -- 描述
+,price VARCHAR2(20) DEFAULT NULL            -- 价格
+,SalesPrice VARCHAR2(20) DEFAULT NULL    -- 促销价格
+,VIPPrice VARCHAR2(20) DEFAULT NULL       -- VIP价格
+,remark VARCHAR2(200) DEFAULT NULL       -- 备注
+,image VARCHAR2(200) DEFAULT NULL        -- 图片地址(多张图片以;号结尾)
+,PRIMARY KEY (id)
+);
+
+insert into dishes(id,name,type,describe,price,SalesPrice,VIPPrice,remark,image)values('140501','啤酒鸭','套餐','','128','115.2','115.2','','/upload/01.jpg');
+ insert into dishes(id,name,type,describe,price,SalesPrice,VIPPrice,remark,image)values('140502','海鲜总动员','套餐','','158','142.2','142.2','','/upload/02.jpg');
+ insert into dishes(id,name,type,describe,price,SalesPrice,VIPPrice,remark,image)values('140503','美极小花螺','零售','','58','52.2','52.2','','/upload/03.jpg');
+ insert into dishes(id,name,type,describe,price,SalesPrice,VIPPrice,remark,image)values('140504','花蟹养生宝','零售','','68','61.2','61.2','','/upload/04.jpg');
+ insert into dishes(id,name,type,describe,price,SalesPrice,VIPPrice,remark,image)values('140505','聚宾坛子肉','零售','','38','34.2','34.2','','/upload/05.jpg');
+ insert into dishes(id,name,type,describe,price,SalesPrice,VIPPrice,remark,image)values('140506','清真牛肉','零售','','40','36','36','','/upload/06.jpg');
+ insert into dishes(id,name,type,describe,price,SalesPrice,VIPPrice,remark,image)values('140507','翡翠溜双白','零售','','28','25.2','25.2','','/upload/07.jpg');
+ insert into dishes(id,name,type,describe,price,SalesPrice,VIPPrice,remark,image)values('140508','香煎桂花鱼','零售','','38','34.2','34.2','','/upload/08.jpg');
+ insert into dishes(id,name,type,describe,price,SalesPrice,VIPPrice,remark,image)values('140509','奶油蛤蜊浓汤','零售','','40','36','36','','/upload/09.jpg');
+commit;
+-- 订单 --
+-- drop table orders;
+CREATE TABLE orders
+(
+id VARCHAR2(50) NOT NULL --订单编号 --
+,usersId  VARCHAR2(50) DEFAULT NULL  -- 用户id
+,amount VARCHAR2(50) DEFAULT NULL  -- 金额
+,quantity VARCHAR2(20) DEFAULT NULL -- 数量 
+,time VARCHAR2(50) DEFAULT NULL -- 时间 --
+,status1 VARCHAR2(20) DEFAULT NULL -- 状态 --
+,status2 VARCHAR2(20) DEFAULT NULL -- 状态 --
+,PRIMARY KEY (id)
+);
+-- 购物车
+-- drop table cart;/*针对是明细的Cart*/
+CREATE TABLE Cart
+(
+id VARCHAR2(20) NOT NULL --商品编号 --
+,name VARCHAR2(50) DEFAULT NULL  -- 商品名称 --
+,OriginalPrice VARCHAR2(20) DEFAULT NULL  -- 原价 --
+,Quantity VARCHAR2(20) DEFAULT NULL -- 数量 --
+,Price VARCHAR2(20) DEFAULT NULL -- 单价 --
+,PRIMARY KEY (id)
+);
+
+select * from cart;
+
+-- 清单 --
+-- drop table OrderDetails;
+CREATE TABLE OrderDetails
+(
+id VARCHAR2(20) NOT NULL --订单编号 --
+,name VARCHAR2(50) DEFAULT NULL  -- 商品名称
+,Subtotal VARCHAR2(20) DEFAULT NULL -- 小计 --
+,Quantity VARCHAR2(20) DEFAULT NULL -- 数量 
+,Price VARCHAR2(20) DEFAULT NULL -- 单价 --
+,status VARCHAR2(20) DEFAULT NULL 
+,PRIMARY KEY (id)
+);
+commit;

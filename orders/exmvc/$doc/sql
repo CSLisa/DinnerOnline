@@ -1,0 +1,13 @@
+-- 订单 --
+-- drop table orders;
+CREATE TABLE orders
+(
+id VARCHAR2(20) NOT NULL --订单编号 --
+,usersId  VARCHAR2(50) DEFAULT NULL  -- 用户id
+,amount VARCHAR2(50) DEFAULT NULL  -- 金额
+,quantity VARCHAR2(20) DEFAULT NULL -- 数量 
+,time VARCHAR2(20) DEFAULT NULL -- 时间 --
+,status1 VARCHAR2(20) DEFAULT NULL -- 状态 --
+,status2 VARCHAR2(20) DEFAULT NULL -- 状态 --
+,PRIMARY KEY (id)
+);

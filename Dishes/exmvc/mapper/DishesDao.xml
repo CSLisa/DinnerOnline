@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="exmvc.dao.DishesDao" >
+       <sql id="conditionHandling">
+       <if test="id!=null and id!=''">
+             and id like '%${id}%'  
+       </if>
+       <if test="name!=null and name!=''" >  
+          and name like '%${name}%'    
+      </if>
+      <if test="type!=null and type!=''" >  
+          and type like '%${type}%'    
+      </if>
+      <if test="describe!=null and describe!=''" >  
+          and describe like '%${describe}%'    
+      </if>
+      <if test="price!=null and price!=''" >  
+          and price like '%${price}%'    
+      </if>
+      <if test="salesprice!=null and salesprice!=''" >  
+          and salesprice like '%${salesprice}%'    
+      </if>
+      <if test="vipprice!=null and vipprice!=''" >  
+          and vipprice like '%${vipprice}%'    
+      </if>
+      <if test="remark!=null and remark!=''" >  
+          and remark like '%${remark}%'    
+      </if>
+      <if test="image!=null and image!=''" >  
+          and image like '%${image}%'    
+      </if>
+       
+       </sql>
+       
+       <select id="findAll" resultType="exmvc.entity.impl.Dishes"  parameterType="exmvc.entity.impl.Dishes">
+	    select * from Dishes
+	    where 
+	       1=1
+	       <include refid="conditionHandling"></include>
+	  </select>
+       <select id="findById" resultType="exmvc.entity.impl.Dishes"  parameterType="exmvc.entity.impl.Dishes">
+	    select * from Dishes
+	    where 
+	       id=#{id}
+	    
+	</select>
+	<select id="getRows" resultType="int" parameterType="exmvc.entity.impl.Dishes" >
+         select count(*) from Dishes 
+	      where  
+	           1=1
+	       <include refid="conditionHandling"></include>     
+   </select>
+   <!-- 
+    List<T> findByPaging(T condition,RowBounds rowBounds);
+    -->
+   <select id="findByPaging" resultType="exmvc.entity.impl.Dishes"  parameterType="exmvc.entity.impl.Dishes" >
+      select e1.* 
+      from 
+        (
+           select e.*,rownum rn
+           from 
+           (
+             select * from Dishes 
+	         where  
+	           1=1
+	           <include refid="conditionHandling"></include>
+             order by to_number(id) asc
+           )e
+        ) e1 
+	</select>
+	<!-- 
+	 int add(T condition) throws Exception;
+	 -->
+	<insert id="add" parameterType="exmvc.entity.impl.Dishes">
+	   insert into Dishes
+	       (id,name,type,describe,price,salesprice,vipprice,remark,image)
+	   values
+	       (#{id},#{name},#{type},#{describe},#{price},#{salesprice},#{vipprice},#{remark},#{image}) 
+	</insert>
+	 <!-- 
+	 int update(T condition) throws Exception;
+	 -->
+	<update id="update" parameterType="exmvc.entity.impl.Dishes">
+	    update Dishes
+	    <set>
+	     <if test="name!=null and name!=''" >  
+          and name like '%${name}%'    
+      </if>
+	      <if test="type!=null and type!=''" >  
+          and type like '%${type}%'    
+      </if>
+      <if test="describe!=null and describe!=''" >  
+          and describe like '%${describe}%'    
+      </if>
+      <if test="price!=null and price!=''" >  
+          and price like '%${price}%'    
+      </if>
+      <if test="salesprice!=null and salesprice!=''" >  
+          and salesprice like '%${salesprice}%'    
+      </if>
+      <if test="vipprice!=null and vipprice!=''" >  
+          and vipprice like '%${vipprice}%'    
+      </if>
+      <if test="remark!=null and remark!=''" >  
+          and remark like '%${remark}%'    
+      </if>
+      <if test="image!=null and image!=''" >  
+          and image like '%${image}%'    
+      </if>
+	    </set>
+	    where 
+	       id=#{id}  
+	</update>
+	<delete id="delete" parameterType="exmvc.entity.impl.Dishes">
+	    delete from Dishes
+	    where 
+	       id=#{id} 
+	</delete> 
+	
+</mapper>

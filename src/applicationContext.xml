@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+<!-- 配置拦截器 -->  
+ <mvc:interceptors>  
+     <!-- 多个拦截器，顺序执行 -->  
+      <!-- <mvc:interceptor>  
+        /** 表示所有的url，包括子url路径  
+          <mvc:mapping path="/**"/>  
+          <bean class="cn.labelnet.ssm.filter.HanderInterceptor1"></bean>  
+      </mvc:interceptor>   -->
+      <!-- 配置登陆拦截器 -->  
+      <mvc:interceptor>  
+          <mvc:mapping path="/**"/>  
+          <bean class="common.util.SpringLoginInterceptor"></bean>  
+      </mvc:interceptor>  
+ </mvc:interceptors>   
+</beans>

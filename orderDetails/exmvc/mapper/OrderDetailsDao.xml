@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="exmvc.dao.OrderDetailsDao" >
+ 
+  <sql id="condtionHandling" >
+   <if test="id!=null and id!=''">
+   and id like '%${id}%'
+   </if>
+   <if test="name!=null and name!=''">
+   and name like '%${name}%'
+   </if>
+   <if test="subtotal!=null and subtotal!=''">
+   and subtotal like '%${subtotal}%'
+   </if>
+   <if test="quantity!=null and quantity!=''">
+   and quantity like '%${quantity}%'
+   </if>
+   <if test="price!=null and price!=''">
+   and price like '%${price}%'
+   </if>
+   <if test="status!=null and status!=''">
+   and status like '%${status}%'
+   </if>
+  </sql>
+  <select id="findAll" resultType="exmvc.entity.impl.OrderDetails" parameterType="exmvc.entity.impl.OrderDetails">
+  select * from ORDERDETAILS
+  where
+  1=1
+  <include refid="condtionHandling"></include>
+  </select>
+  <select id="findById" resultType="exmvc.entity.impl.OrderDetails" parameterType="exmvc.entity.impl.OrderDetails">
+  select * from ORDERDETAILS
+  where
+  id=#{id}
+  </select>
+  <select id="getRows" resultType="int" parameterType="exmvc.entity.impl.OrderDetails">
+  select count(*) from ORDERDETAILS
+  where
+  1=1
+  <include refid="condtionHandling"></include>
+  </select>
+  <select id="findByPaging" resultType="exmvc.entity.impl.OrderDetails" parameterType="exmvc.entity.impl.OrderDetails">
+  select e1.*
+  from
+  (
+  select e.*,rownum rn
+  from
+  (
+  select * from ORDERDETAILS
+  where
+  1=1
+  <include refid="condtionHandling"></include>
+  order by to_number(id) asc
+  )e
+  )e1
+  </select>
+  <insert id="add" parameterType="exmvc.entity.impl.OrderDetails">
+  insert into OrderDetails
+  (id,name,subtotal,quantity,price,status)
+  values
+  (#{id},#{name},#{subtotal},#{quantity},#{price},#{status})
+  </insert>
+  <update id="update" parameterType="exmvc.entity.impl.OrderDetails">
+  update ORDERDETAILS
+  <set>
+  <if test="name!=null and name!=''">
+  name=#{name}
+  </if>
+  <if test="subtotal!=null and subtotal!=''">
+  ,subtotal=#{subtotal}
+  </if>
+  <if test="quantity!=null and quantity!=''">
+  ,quantity=#{quantity}
+  </if> 
+  <if test="price!=null and price!=''">
+  ,price=#{price}
+  </if> 
+  <if test="status!=null and status!=''">
+  ,status=#{status}
+  </if>   
+  </set>
+  where
+  id=#{id}
+  </update>
+  <delete id="delete" parameterType="exmvc.entity.impl.OrderDetails">
+  delete from ORDERDETAILS
+  where
+  id=#{id}
+  </delete>
+</mapper>

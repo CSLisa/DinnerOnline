@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="exmvc.dao.UsersDao" >
+  <resultMap id="BaseResultMap" type="exmvc.entity.impl.Users" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="PWD" property="pwd" jdbcType="VARCHAR" />
+    <result column="REALNAME" property="realname" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="AGE" property="age" jdbcType="VARCHAR" />
+    <result column="IDCARD" property="idcard" jdbcType="VARCHAR" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="conditionHandling" >
+   	<if test="id != null and id!=''" >
+        and ID like '%${id}%'
+      </if>
+      <if test="name != null and name!=''" >
+        and name like '%${name}%'
+      </if>
+      <if test="pwd != null and pwd!=''" >
+        and pwd like '%${pwd}%'
+      </if>
+      <if test="realname != null and realname!=''" >
+        and realname like '%${realname}%'
+      </if>
+      <if test="sex != null and sex!=''" >
+        and sex like '%${sex}%'
+      </if>
+      <if test="age != null and age!=''" >
+        and age like '%${age}%'
+      </if>
+      <if test="idcard != null and idcard!=''" >
+        and idcard like '%${idcard}%'
+      </if>
+      <if test="address != null and address!=''" >
+        and address like '%${address}%'
+      </if>
+      <if test="phone != null and phone!=''" >
+        and phone like '%${phone}%'
+      </if>
+      <if test="email != null and email!=''" >
+        and email like '%${email}%'
+      </if>
+      <if test="code != null and code!=''" >
+        and code like '%${code}%'
+      </if>
+      <if test="type != null and type!=''" >
+        and type like '%${type}%'
+      </if>
+  </sql>
+  <!-- 根据用户名和密码查询 -->
+  <select id="findByNameAndPwd" resultType="exmvc.entity.impl.Users">
+        select * from users where name=#{name} and pwd=#{pwd}
+    </select>
+    <!-- 根据用户名查询 -->
+    <select id="findByName" resultType="exmvc.entity.impl.Users">
+        select * from users where name=#{name}
+    </select>
+  <select id="findAll" resultType="exmvc.entity.impl.Users"  parameterType="exmvc.entity.impl.Users">
+	    select * from users
+	    where 
+	       1=1
+	       <include refid="conditionHandling"></include>
+	  </select>
+  <select id="findById" resultType="exmvc.entity.impl.Users" parameterType="exmvc.entity.impl.Users" >
+    select * from USERS
+    where 
+     	ID = #{id}
+  </select>
+  <select id="getRows" resultType="int" parameterType="exmvc.entity.impl.Users" >
+         select count(*) from Users 
+	      where  
+	           1=1
+	       <include refid="conditionHandling"></include>     
+   </select>
+   <!-- 
+    List<T> findByPaging(T condition,RowBounds rowBounds);
+    -->
+   <select id="findByPaging" resultType="exmvc.entity.impl.Users"  parameterType="exmvc.entity.impl.Users" >
+      select e1.* 
+      from 
+        (
+           select e.*,rownum rn
+           from 
+           (
+             select * from users 
+	         where  
+	           1=1
+	           <include refid="conditionHandling"></include>
+             order by to_number(id) asc
+           )e
+        ) e1 
+	</select>
+  <delete id="delete" parameterType="exmvc.entity.impl.Users" >
+    delete from USERS
+    where 
+    	ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="add" parameterType="exmvc.entity.impl.Users" >
+    insert into USERS 
+    (ID, NAME, PWD, 
+      REALNAME, SEX, AGE, 
+      IDCARD, ADDRESS, PHONE, 
+      EMAIL, CODE, TYPE)
+    values 
+    (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
+      #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{age,jdbcType=VARCHAR}, 
+      #{idcard,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
+  </insert>
+  <update id="update" parameterType="exmvc.entity.impl.Users" >
+    update USERS
+    <set >
+      <if test="name != null and name!=''" >
+         name=#{name}
+      </if>
+      <if test="pwd != null and pwd!=''" >
+         ,pwd=#{pwd}
+      </if>
+      <if test="realname != null and realname!=''" >
+         ,realname=#{realname}
+      </if>
+      <if test="sex != null and sex!=''" >
+        ,sex=#{sex}
+      </if>
+      <if test="age != null and age!=''" >
+        ,age=#{age}
+      </if>
+      <if test="idcard != null and idcard!=''" >
+        ,idcard=#{idcard}
+      </if>
+      <if test="address != null and address!=''" >
+        ,address=#{address}
+      </if>
+      <if test="phone != null and phone!=''" >
+        ,phone=#{phone}
+      </if>
+      <if test="email != null and email!=''" >
+        ,email=#{email}
+      </if>
+      <if test="code != null and code!=''" >
+        ,code=#{code}
+      </if>
+      <if test="type != null and type!=''" >
+        ,type=#{type}
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
